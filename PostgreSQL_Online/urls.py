@@ -21,6 +21,8 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('schemas/',sv.schemaView)
+    path('schemas/',sv.schemaView,name='schemas'),
+    path('schemas/<int:schema_id>',sv.schemaOverview,name='overview'),
+    path('schemas/query/<int:question_id>',sv.query,name='query')
 ]
 urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

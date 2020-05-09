@@ -1,0 +1,13 @@
+<html>
+    <body>
+    <h1>{{ schema.name }}</h1>
+    <h2>schema</h2>
+    <img src="{{ schema.overview.url }}">
+    <br>
+    <h1 style="color: brown;">{{ question.statement }}</h1>
+    <form action="{% url 'query' question.pk %}" method="POST">{% csrf_token %}
+    <input type="text" name="answer" style="font-size:18pt;height:220px;width:600px;text-indent: 0px;" placeholder="type your postgreSQL query here"><br><br>
+    <button type="submit">Execute</button>
+    </form>
+    </body>
+</html>

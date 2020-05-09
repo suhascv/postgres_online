@@ -7,6 +7,7 @@ class Schema(models.Model):
     image=models.ImageField(upload_to='images/')
     name=models.CharField(max_length=100)
     description=models.TextField(default='')
+    overview=models.ImageField(upload_to='images/',blank=True)
 
     def __str__(self):
         return self.name

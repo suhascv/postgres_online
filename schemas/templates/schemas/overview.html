@@ -1,0 +1,13 @@
+<html>
+    <body>
+        <h1>{{ schema.name }}</h1>
+        <img src='{{ schema.overview.url }}'><br>
+        <p>{{ schema.description }}</p>
+        <h1>Questions</h1>
+        <ul>
+        {% for question in questions %}
+        <li><h3><a href="{% url 'query' question.pk %}">{{ question.statement }}</a></h3></li>
+        {% endfor %}
+        </ul>
+    </body>
+</html>

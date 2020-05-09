@@ -2,9 +2,11 @@
     {% load static %}
     <body>
         <h1>SCHEMAS</h1>
+        <ul>
         {% for schema in schemas %}
         <img src='{{ schema.image.url }}'></img>
-        <h2>{{ schema.name }}</h2>
+        <li><h2><a href="{% url 'overview' schema.pk %}">{{ schema.name }}</a></h2></li>
         {% endfor %}
+        </ul>
     </body>
 </html>
