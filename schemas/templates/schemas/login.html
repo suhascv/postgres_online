@@ -1,0 +1,9 @@
+<div class="container">
+    <h1>Login</h1>
+    <form method="post" action="{% url 'signin' %}">{% csrf_token %}
+      <p>username</p><input type="text" placeholder="type your username" name="username"><br>
+      <p>password</p><input type="password" placeholder="type your password" name="password"><br><br>
+      <button type="submit">Login</button>
+    </form>
+    </div>
+<h2>not a member <a href="{% url 'signup' %}">sign up</a></h2>

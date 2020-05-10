@@ -1,6 +1,18 @@
 <html>
     {% load static %}
+
     <body>
+        <div class='nav-bar'>
+         {% if user %}
+         <p>hello, {{ user }}</p>
+         <a href="{% url 'logout' %}">logout</a>   
+         {% endif %}
+         {% if not user %}
+         <a href="{% url 'signup' %}">signup</a> <br><br>
+         <a href="{% url 'signin' %}">login</a>
+         {% endif %}
+        </div>
+        
         <h1>SCHEMAS</h1>
         <ul>
         {% for schema in schemas %}

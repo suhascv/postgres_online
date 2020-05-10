@@ -23,6 +23,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('schemas/',sv.schemaView,name='schemas'),
     path('schemas/<int:schema_id>',sv.schemaOverview,name='overview'),
-    path('schemas/query/<int:question_id>',sv.query,name='query')
+    path('schemas/query/<int:question_id>',sv.query,name='query'),
+    path('signup/',sv.signUp,name='signup'),
+    path('login/',sv.signIn,name='signin'),
+    path('logout/',sv.logout_view,name='logout')
 ]
 urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
