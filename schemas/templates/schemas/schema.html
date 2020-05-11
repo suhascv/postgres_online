@@ -5,7 +5,8 @@
         <div class='nav-bar'>
          {% if user %}
          <p>hello, {{ user }}</p>
-         <a href="{% url 'logout' %}">logout</a>   
+         <a href="{% url 'logout' %}">logout</a>  
+         <a href="{% url 'account' %}">account</a> 
          {% endif %}
          {% if not user %}
          <a href="{% url 'signup' %}">signup</a> <br><br>

@@ -1,0 +1,11 @@
+<html>
+    <body>
+        <h1>Hello {{ user }} </h1>
+        <h2>select schema to view your progress</h2>
+        <ul>
+        {% for schema in schemas %}
+           <li><a href="{% url 'status' schema.pk %}">{{ schema.name }}</a></li>
+        {% endfor %}
+        </ul>
+    </body>
+</html>

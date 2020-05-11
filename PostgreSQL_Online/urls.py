@@ -26,6 +26,8 @@ urlpatterns = [
     path('schemas/query/<int:question_id>',sv.query,name='query'),
     path('signup/',sv.signUp,name='signup'),
     path('login/',sv.signIn,name='signin'),
-    path('logout/',sv.logout_view,name='logout')
+    path('logout/',sv.logout_view,name='logout'),
+    path('account/',sv.account,name='account'),
+    path('status/<int:schema_id>',sv.status,name='status')
 ]
 urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
