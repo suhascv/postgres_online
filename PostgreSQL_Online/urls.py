@@ -15,12 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf.urls import include
 import schemas.views as sv
 from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('accounts/',include('django.contrib.auth.urls')),
     path('schemas/',sv.schemaView,name='schemas'),
     path('schemas/<int:schema_id>',sv.schemaOverview,name='overview'),
     path('schemas/query/<int:question_id>',sv.query,name='query'),

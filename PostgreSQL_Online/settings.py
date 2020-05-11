@@ -103,8 +103,9 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
-
+#
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+#EMAIL_FILE_PATH = os.path.join(BASE_DIR,"sent_emails")
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 

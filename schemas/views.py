@@ -47,11 +47,11 @@ def signUp(request):
         email = request.POST.get('email','')
         try:
             User.objects.get(username=username)
-            return render(request,'schemas/signup.html',{'error':'user already exists TRY AGAIN'})
+            return render(request,'registration/signup.html',{'error':'user already exists TRY AGAIN'})
         except:
             try:
                 User.objects.get(email=email)
-                return render(request,'schemas/signup.html',{'error':'email already exists or invalid email TRY AGAIN'})
+                return render(request,'registration/signup.html',{'error':'email already exists or invalid email TRY AGAIN'})
             except:
                 user=User.objects.create_user(username,password=password,email=email)
                 user.save()
@@ -59,7 +59,7 @@ def signUp(request):
                 insertQuestion(user)
                 return redirect('schemas')        
     else:
-        return render(request,'schemas/signup.html',{})
+        return render(request,'registration/signup.html',{})
         
 
 #displaying login form
@@ -70,7 +70,7 @@ def signIn(request):
         login(request,user)
         return redirect('schemas')
     else:
-        return render(request,'schemas/login.html',{})
+        return render(request,'registration/login.html',{})
     
 
 def logout_view(request):
