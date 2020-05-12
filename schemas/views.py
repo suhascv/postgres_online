@@ -5,9 +5,59 @@ from django.views import generic
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.models import User
 from .models import Schema,Question,UserQuestions
+from rest_framework import routers,serializers,viewsets
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from django.http import HttpResponse,JsonResponse
+from .serializers import SchemaSerializer,UserSerializer,SchemaOverviewSerializer,QuestionSerializer,UserQuestionsSerializer
+from rest_framework import serializers
+
+
 
 # Create your views here.
 
+
+@api_view()
+def schema_api_view(request):
+    schemas=Schema.objects.all()
+    serializer=SchemaSerializer(schemas,many=True)
+    context={'schemas':serializer.data}
+    user = request.user
+    if user is not None:
+        context['user']=user.username
+    else:
+        context['user']=False
+
+    return Response(context)
+
+
+@api_view(['GET'])
+def schema_overview_api_view(request,schema_id):
+    schema=get_object_or_404(Schema,pk=schema_id)
+    serializer=SchemaOverviewSerializer(schema)
+    context={'schema':serializer.data}
+    questions=Question.objects.filter(schema=schema_id)
+    context['questions']=QuestionSerializer(questions,many=True).data
+    
+    return Response(context)
+
+@api_view(['GET','POST'])
+def query_api_view(request,question_id):
+    context={}
+    if request.user.is_authenticated:
+        question=get_object_or_404(Question,pk=question_id)
+        schema_id=question.schema.pk
+        schema=Schema.objects.get(pk=schema_id)
+        schema_serializer=SchemaOverviewSerializer(schema)
+        question_serializer=QuestionSerializer(question)
+        user_question=UserQuestions.objects.get(user=request.user.pk,question=question_id)
+        user_question_serializer=UserQuestionsSerializer(user_question)
+        context={'schema':schema_serializer.data,
+                'question':question_serializer.data,
+                'user_question':user_question_serializer.data}
+
+    return Response(context)
+    
 
 #displaying all schemas
 def schemaView(request):

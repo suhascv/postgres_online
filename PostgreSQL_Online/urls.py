@@ -15,10 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from django.conf.urls import include
+from django.conf.urls import include,url
 import schemas.views as sv
 from django.conf import settings
 from django.conf.urls.static import static
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -30,6 +31,10 @@ urlpatterns = [
     path('login/',sv.signIn,name='signin'),
     path('logout/',sv.logout_view,name='logout'),
     path('account/',sv.account,name='account'),
-    path('status/<int:schema_id>',sv.status,name='status')
+    path('status/<int:schema_id>',sv.status,name='status'),
+    path('api/schemas/',sv.schema_api_view,name='schema_api'),
+    path('api/schemas/<int:schema_id>',sv.schema_overview_api_view,name='schema_overview_api'),
+    path('api/schemas/questions/<int:question_id>',sv.query_api_view,name='query_api'),
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
 urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

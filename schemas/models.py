@@ -29,3 +29,4 @@ class UserQuestions(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     question = models.ForeignKey(Question,on_delete=models.CASCADE)
     status=models.CharField(max_length=100,default='not attempted')
+    latest=models.TextField(blank=True)
