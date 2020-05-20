@@ -17,6 +17,7 @@ from knox.models import AuthToken
 # Create your views here.
 
 
+#all api views
 @api_view()
 def schema_api_view(request):
     schemas=Schema.objects.all()
@@ -66,13 +67,39 @@ def login_api_view(request):
     if user is not None:
         login(request,user)
         return Response({'status':'valid',
+        'user':UserSerializer(user).data,
         "token":AuthToken.objects.create(user)[1]
         })
     else:
         return Response({'status':'invalid credentials'})
 
+@api_view(['POST'])
+def signup_api_view(request):
+    username,password=request.data['username'],request.data['password']
+    email=request.data['email']
+    try:
+            User.objects.get(username=username)
+            return Response({'error':'user already exists TRY AGAIN'})
+    except:
+            try:
+                User.objects.get(email=email)
+                return Response({'error':'email already exists or invalid email TRY AGAIN'})
+            except:
+                user=User.objects.create_user(username,password=password,email=email)
+                user.save()
+                login(request,user)
+                insertQuestion(user)
+                return Response({'status':'valid',
+        'user':UserSerializer(user).data,
+        "token":AuthToken.objects.create(user)[1]
+        })
 
-#displaying all schemas
+
+
+
+
+
+#displaying all normal views
 def schemaView(request):
     schemas=Schema.objects.all()
     context={'schemas':schemas}

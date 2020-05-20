@@ -19,6 +19,8 @@ from django.conf.urls import include,url
 import schemas.views as sv
 from django.conf import settings
 from django.conf.urls.static import static
+from knox.views import LogoutView
+
 
 
 urlpatterns = [
@@ -36,6 +38,8 @@ urlpatterns = [
     path('api/schemas/<int:schema_id>',sv.schema_overview_api_view,name='schema_overview_api'),
     path('api/schemas/questions/<int:question_id>',sv.query_api_view,name='query_api'),
     path('api/login',sv.login_api_view,name='login_api'),
+    path('api/signup',sv.signup_api_view,name='signup_api'),
+    path('api/logout',LogoutView.as_view(),name='knox_logout'),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
 urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
