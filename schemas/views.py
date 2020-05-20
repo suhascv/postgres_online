@@ -9,10 +9,10 @@ from rest_framework import routers,serializers,viewsets
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.http import HttpResponse,JsonResponse
-from .serializers import SchemaSerializer,UserSerializer,SchemaOverviewSerializer,QuestionSerializer,UserQuestionsSerializer
+from .serializers import SchemaSerializer,UserSerializer,\
+SchemaOverviewSerializer,QuestionSerializer,UserQuestionsSerializer,LoginSerializer
 from rest_framework import serializers
-
-
+from knox.models import AuthToken
 
 # Create your views here.
 
@@ -59,6 +59,19 @@ def query_api_view(request,question_id):
     return Response(context)
     
 
+@api_view(['POST'])
+def login_api_view(request):
+    username,password=request.data['username'],request.data['password']
+    user=authenticate(username=username,password=password)
+    if user is not None:
+        login(request,user)
+        return Response({'status':'valid',
+        "token":AuthToken.objects.create(user)[1]
+        })
+    else:
+        return Response({'status':'invalid credentials'})
+
+
 #displaying all schemas
 def schemaView(request):
     schemas=Schema.objects.all()
@@ -70,6 +83,7 @@ def schemaView(request):
         context['user']=False
     print(context['user'])
     return render(request,'schemas/schema.html',context)
+    
 
 #displaying a overview and questions of the selected schema
 def schemaOverview(request,schema_id):

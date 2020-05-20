@@ -35,6 +35,7 @@ urlpatterns = [
     path('api/schemas/',sv.schema_api_view,name='schema_api'),
     path('api/schemas/<int:schema_id>',sv.schema_overview_api_view,name='schema_overview_api'),
     path('api/schemas/questions/<int:question_id>',sv.query_api_view,name='query_api'),
+    path('api/login',sv.login_api_view,name='login_api'),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
 urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

@@ -39,10 +39,31 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'schemas',
     'rest_framework',
+    'corsheaders',
+    'knox'
 ]
-CORS_ORIGIN_WHITELIST=('localhost:3000/')
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (  # added
+        'knox.auth.TokenAuthentication',
+    ),
+    'DATETIME_FORMAT': "%m/%d/%Y %H:%M:%S",
+}
+
+
+CORS_ORIGIN_ALLOW_ALL = True
+
+"""
+CORS_ORIGIN_WHITELIST = [
+'http://localhost:3000',
+'http://localhost:8000',
+'http://localhost:8080',
+]
+"""
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -50,6 +71,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    
 ]
 
 ROOT_URLCONF = 'PostgreSQL_Online.urls'
