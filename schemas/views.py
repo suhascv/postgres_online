@@ -16,7 +16,6 @@ from knox.models import AuthToken
 
 # Create your views here.
 
-
 #all api views
 @api_view()
 def schema_api_view(request):
@@ -42,20 +41,30 @@ def schema_overview_api_view(request,schema_id):
     
     return Response(context)
 
-@api_view(['GET','POST'])
+@api_view(['POST'])
 def query_api_view(request,question_id):
-    context={}
-    if request.user.is_authenticated:
+    
+    request_token=request.data["token"]
+    request_pk=int(request.data["userpk"])
+    context={'status':False}
+    try:
+        token=AuthToken.objects.get(digest=request_token)
+        if token.user.pk==request_pk:
+            context['status']=True
+    except:
+        context['status']=False
+    
+    if context['status']:
         question=get_object_or_404(Question,pk=question_id)
         schema_id=question.schema.pk
         schema=Schema.objects.get(pk=schema_id)
         schema_serializer=SchemaOverviewSerializer(schema)
         question_serializer=QuestionSerializer(question)
-        user_question=UserQuestions.objects.get(user=request.user.pk,question=question_id)
+        user_question=UserQuestions.objects.get(user=request_pk,question=question_id)
         user_question_serializer=UserQuestionsSerializer(user_question)
-        context={'schema':schema_serializer.data,
-                'question':question_serializer.data,
-                'user_question':user_question_serializer.data}
+        context['schema']=schema_serializer.data
+        context['question']=question_serializer.data
+        context['user_question']=user_question_serializer.data
 
     return Response(context)
     
@@ -66,12 +75,14 @@ def login_api_view(request):
     user=authenticate(username=username,password=password)
     if user is not None:
         login(request,user)
+        
         return Response({'status':'valid',
         'user':UserSerializer(user).data,
         "token":AuthToken.objects.create(user)[1]
         })
     else:
         return Response({'status':'invalid credentials'})
+
 
 @api_view(['POST'])
 def signup_api_view(request):
