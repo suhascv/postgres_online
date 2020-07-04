@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls import include,url
 import schemas.views as sv
+import schemas.api_views as asv
 from django.conf import settings
 from django.conf.urls.static import static
 from knox.views import LogoutView
@@ -34,11 +35,12 @@ urlpatterns = [
     path('logout/',sv.logout_view,name='logout'),
     path('account/',sv.account,name='account'),
     path('status/<int:schema_id>',sv.status,name='status'),
-    path('api/schemas/',sv.schema_api_view,name='schema_api'),
-    path('api/schemas/<int:schema_id>',sv.schema_overview_api_view,name='schema_overview_api'),
-    path('api/schemas/questions/<int:question_id>',sv.query_api_view,name='query_api'),
-    path('api/login',sv.login_api_view,name='login_api'),
-    path('api/signup',sv.signup_api_view,name='signup_api'),
+    #api views
+    path('api/schemas/',asv.schema_api_view,name='schema_api'),
+    path('api/schemas/<int:schema_id>',asv.schema_overview_api_view,name='schema_overview_api'),
+    path('api/schemas/questions/<int:question_id>',asv.query_api_view,name='query_api'),
+    path('api/login',asv.login_api_view,name='login_api'),
+    path('api/signup',asv.signup_api_view,name='signup_api'),
     path('api/logout',LogoutView.as_view(),name='knox_logout'),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
