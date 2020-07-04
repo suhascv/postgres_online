@@ -18,8 +18,13 @@ from knox.models import AuthToken
 
 def tokenAuthentication(user,token):
     try:
-        AuthToken.objects.get(digest=token,user=user)
-        return True
+        auth=AuthToken.objects.get(digest=token)
+        user1=User.objects.get(username=token)
+        print(user1)
+        if auth.user.pk==user1.pk:
+            return True
+        else:
+            return False
     except:
         return False
 
@@ -31,7 +36,6 @@ def schema_api_view(request):
     serializer=SchemaSerializer(schemas,many=True)
     context={'schemas':serializer.data}
     if(request.method=='POST'):
-        print(request.data)
         if tokenAuthentication(request.data['user'],request.data['token']):
             context['user']=request.data['user']
     return Response(context)
